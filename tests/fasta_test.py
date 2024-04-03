@@ -1,7 +1,7 @@
 import pytest
 from fasta import Fasta
 
-my_instance = Fasta('sequence.gb')        # 创建Fasta()实例
+my_instance = Fasta(r"D:\work\bio2503\chap04_miscellaneous\mini_p1\sequence.gb")        # 创建Fasta()实例
 
 def test_organism():
     result = my_instance.find_organism()
@@ -21,4 +21,10 @@ def test_find_seq():
     result_list = my_instance.find_dna_seq()
     sliced_list = result_list[:1] + result_list[-1:]        # 由于原结果过长，难以编写test期望答案，故进行头尾切割
     test_list = ['        1 ccacaccaca cccacacacc cacacaccac accacacacc acaccacacc cacacacaca', '   230161 ggtgtgggtg tgggtgtggt gtggtgtgtg ggtgtggtgt gggtgtggtg tgtgtggg']
+    assert sliced_list == test_list
+
+def dna_list():
+    result_list = my_instance.nucleic_acid_list('dna_filter.txt')
+    sliced_list = result_list[:10] + result_list[-10:]
+    test_list = ['c', 'c', 'a', 'c', 'a', 'c', 'c', 'a', 'c', 'a', 't', 'g', 't', 'g', 't', 'g', 't', 'g', 'g', 'g']
     assert sliced_list == test_list
