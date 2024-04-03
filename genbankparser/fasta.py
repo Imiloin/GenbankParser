@@ -17,18 +17,7 @@ class Fasta:
         filter_path = f'{dir_path}/dna_filter.txt'      # 筛选原genbank文件中的整段核酸序列，保存进文件
         reduced_path = f'{dir_path}/reduced_gene_info.txt'      # 存储gene相关信息，且去除重复行
 
-        nucleic_acid = []       # 用于按顺序保存所有核酸信息，一个base作为一个元素
-        with open(filter_path, 'r') as f:
-            nucleic_pat = '([actg]+\s)+[atcg]*$'
-            nucleic_repat = re.compile(nucleic_pat)
-            for line in f:
-                line = line.rstrip()
-                search_nucleic = nucleic_repat.search(line)
-                if search_nucleic:
-                    matched_content = search_nucleic.group()
-                    for char in matched_content:
-                        if char != ' ':     # 去除原文件中的空格
-                            nucleic_acid.append(char)
+        nucleic_acid = self.nucleic_acid_list(filter_path)       # 用于按顺序保存所有核酸信息，一个base作为一个元素
 
         with open(reduced_path, 'r') as f:
             with open(fasta_path, 'w') as fas:
@@ -186,3 +175,19 @@ class Fasta:
                         dna_filter.write(line + '\n')
                         result.append(line)
         return result
+    
+    def nucleic_acid_list(self, path):
+        nucleic_acid = []       # 用于按顺序保存所有核酸信息，一个base作为一个元素
+        filter_path = path
+        with open(filter_path, 'r') as f:
+            nucleic_pat = '([actg]+\s)+[atcg]*$'
+            nucleic_repat = re.compile(nucleic_pat)
+            for line in f:
+                line = line.rstrip()
+                search_nucleic = nucleic_repat.search(line)
+                if search_nucleic:
+                    matched_content = search_nucleic.group()
+                    for char in matched_content:
+                        if char != ' ':     # 去除原文件中的空格
+                            nucleic_acid.append(char)
+        return nucleic_acid
