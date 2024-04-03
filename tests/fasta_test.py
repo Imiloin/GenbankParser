@@ -1,7 +1,7 @@
 import pytest
 from fasta import Fasta
 
-my_instance = Fasta(r"D:\work\bio2503\chap04_miscellaneous\mini_p1\sequence.gb")        # 创建Fasta()实例
+my_instance = Fasta('sequence.gb')        # 创建Fasta()实例
 
 def test_organism():
     result = my_instance.find_organism()
