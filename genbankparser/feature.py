@@ -17,7 +17,7 @@ class Feature:
         return self.qualifiers
 
     def get_locus_tag(self):
-        return self.qualifiers.get('locus_tag', 'Unknown')
+        return self.qualifiers.get('locus_tag', 'UnknownLocustag')
     
     def convert_to_dict(self):
         return {'type': self.feature_type, 'location': self.location, 'qualifiers': self.qualifiers}

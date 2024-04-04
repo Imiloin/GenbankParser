@@ -2,7 +2,6 @@ import re
 import json
 import logging
 from feature import Feature
-# from feature_set import FeatureSet
 
 
 
@@ -225,9 +224,3 @@ if __name__ == '__main__':
     gb_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'sequence.gb')
     gb = Genbank(gb_path, debug=True)
     gb.print_features_to_json()
-
-
-original_string = '"Hello, World!"'
-print(original_string)  # 输出: "Hello, World!"
-stripped_string = original_string.strip('"')
-print(stripped_string)  # 输出: Hello, World!
