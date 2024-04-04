@@ -5,6 +5,9 @@
 # TEMP
 temp/
 
+# Dumped json
+tests/*.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

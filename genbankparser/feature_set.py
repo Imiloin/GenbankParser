@@ -4,13 +4,13 @@ from feature import Feature
 
 class FeatureSet:
     '''
-    Represents a set of features of one Genbank record.
+    Represents a list of features of one Genbank record.
     '''
     def __init__(self):
-        self.features = {}
+        self.featureset = []
 
     def add_feature(self, feature: dict):
-        self.features.update(feature)
+        self.featureset.append(feature)
 
     def get_features(self):
-        return self.features
+        return self.featureset
