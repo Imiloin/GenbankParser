@@ -132,6 +132,9 @@ class Genbank(object):
                     match_feature_start0 = self.FEATURE_START0.match(line)
                     match_feature_start1 = self.FEATURE_START1.match(line)
                     if match_feature_start0 or match_feature_start1:
+                        # add last qualifier to the qualifiers dict
+                        if feature_qualifier_key is not None:
+                            feature_qualifiers[feature_qualifier_key] = feature_qualifier_value.strip('"') # delete the leading and trailing double quotes
                         # add last feature to the features list
                         if feature_type is not None:
                             last_feature = Feature(feature_type, feature_location, feature_qualifiers)
@@ -139,6 +142,7 @@ class Genbank(object):
                                 self.features[last_feature.get_locus_tag()].append(last_feature.convert_to_dict())
                             else:
                                 self.features[last_feature.get_locus_tag()] = [last_feature.convert_to_dict()]
+                            feature_qualifier_key = None
                             feature_qualifiers = {}
                         
                         if match_feature_start0:
@@ -147,7 +151,6 @@ class Genbank(object):
                             feature_location = (int(match_feature_start0.group(2)), int(match_feature_start0.group(3)), False)
                             continue
                         elif match_feature_start1:
-                            last_feature = Feature(feature_type, feature_location, feature_qualifiers)
                             logging.debug(match_feature_start1.groups())
                             feature_type = match_feature_start1.group(1)
                             feature_location = (int(match_feature_start1.group(2)), int(match_feature_start1.group(3)), True)
@@ -156,6 +159,7 @@ class Genbank(object):
                     # check if the line is a new feature qualifier
                     match_feature_qualifier = self.FEATURE_QUALIFIER.match(line)
                     if match_feature_qualifier:
+                        # add last qualifier to the qualifiers dict
                         if feature_qualifier_key is not None:
                             feature_qualifiers[feature_qualifier_key] = feature_qualifier_value.strip('"') # delete the leading and trailing double quotes
                         logging.debug(match_feature_qualifier.groups())
