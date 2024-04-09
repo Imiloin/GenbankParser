@@ -244,7 +244,7 @@ class Genbank(object):
             logging.error('Unknown state: {}'.format(state))
         logging.debug('\n')
     
-    def print_features_to_json(self):
+    def export_features_to_json(self):
         filename = os.path.basename(self.filepath)
         filename = os.path.splitext(filename)[0] + '.json'
         directory = os.path.dirname(self.filepath)
@@ -263,7 +263,7 @@ if __name__ == '__main__':
     import os
     gb_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'protein_refseq.gb')
     gb = Genbank(gb_path, debug=True)
-    gb.print_features_to_json()
+    gb.export_features_to_json()
     json_path = '/Users/xiaoyao/Downloads/GenbankParser-main/tests/.json'
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)

@@ -2,7 +2,7 @@ import pytest
 import os
 from genbankparser.fasta import Fasta
 
-my_instance = Fasta(os.path.join(os.path.dirname(__file__), 'noref.gb'))        # 创建Fasta()实例
+my_instance = Fasta(os.path.join(os.path.dirname(__file__), 'sequence.gb'))        # 创建Fasta()实例
 
 def test_organism():
     result = my_instance.find_organism()

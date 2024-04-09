@@ -30,7 +30,7 @@ def perform_genbank_test(
     assert gb.features == features
     
     #测试json文件
-    gb.print_features_to_json()
+    gb.export_features_to_json()
     base_path = os.path.splitext(path)[0]
     json_path = f"{base_path}.json"
 
