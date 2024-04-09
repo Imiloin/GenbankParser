@@ -57,7 +57,7 @@ class Genbank(object):
             logging.basicConfig(level=logging.INFO)
         
         self.filepath = filepath
-        self.features = {}  # {locus_tag: FeatureSet, ...}
+        self.features = {}  # {locus_tag: FeatureList, ...}
         self.origin = None
         
         self.parse_state = self.STATE_INITIAL
@@ -66,7 +66,6 @@ class Genbank(object):
 
     def _parse(self):
         with open(self.filepath) as f:
-            # feature_set = FeatureSet()
             feature_type = None
             feature_location = None
             feature_qualifier_key = None
@@ -121,6 +120,22 @@ class Genbank(object):
                     # to be implemented
                 elif line.startswith('FEATURES'):
                     self.parse_state = self.STATE_FEATURES
+                elif line.startswith('ORIGIN'):
+                    # 先将最后一个feature添加到features中
+                    # add last qualifier to the qualifiers dict
+                    if feature_qualifier_key is not None:
+                        feature_qualifiers[feature_qualifier_key] = feature_qualifier_value.strip('"') # delete the leading and trailing double quotes
+                    # add last feature to the features list
+                    if feature_type is not None:
+                        last_feature = Feature(feature_type, feature_location, feature_qualifiers)
+                        if last_feature.get_locus_tag() in self.features:
+                            self.features[last_feature.get_locus_tag()].append(last_feature.convert_to_dict())
+                        else:
+                            self.features[last_feature.get_locus_tag()] = [last_feature.convert_to_dict()]
+                        feature_qualifier_key = None
+                        feature_qualifiers = {}
+                    
+                    self.parse_state = self.STATE_ORIGIN
                     continue
                 
                 
@@ -176,6 +191,9 @@ class Genbank(object):
                         else:
                             feature_qualifier_value += ' ' + match_feature_qualifier_cont.group(1)
                         continue
+                elif self.parse_state == self.STATE_ORIGIN:
+                    # to be implemented
+                    pass
                     
             
     def _parse_nosub_info(self, state: int, info: str):
