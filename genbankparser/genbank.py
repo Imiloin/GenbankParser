@@ -2,7 +2,7 @@ import re
 import json
 import logging
 from feature import Feature
-
+import os
 
 
 class Genbank(object):
@@ -50,6 +50,16 @@ class Genbank(object):
     FEATURE_QUALIFIER_CONT = re.compile(FEATURE_QUALIFIER_CONT)  # continuation of a qualifier value
     
     def __init__(self, filepath, debug=False):
+        self.locus = None
+        self.definition = None
+        self.accession = None
+        self.version = None
+        self.keywords = None
+        self.comment = None
+        self.reference = None
+        self.dnlink = None
+        self.length = 0
+
         # set up logging
         if debug:
             logging.basicConfig(level=logging.DEBUG)
@@ -63,6 +73,7 @@ class Genbank(object):
         self.parse_state = self.STATE_INITIAL
         self.parse_annotation = False
         self._parse()
+
 
     def _parse(self):
         with open(self.filepath) as f:
@@ -202,24 +213,33 @@ class Genbank(object):
         if state == self.STATE_LOCUS:
             logging.debug('Parsing LOCUS')
             logging.debug(info)
+            locus_parts = info.split()  # 将info按空格分割为多个字段
+            self.locus = locus_parts[0]  
+            self.length = int(locus_parts[1])
         elif state == self.STATE_DEFINITION:
             logging.debug('Parsing DEFINITION')
             logging.debug(info)
+            self.definition = info.strip()
         elif state == self.STATE_ACCESSION:
             logging.debug('Parsing ACCESSION')
             logging.debug(info)
+            self.accession = info.strip()
         elif state == self.STATE_VERSION:
             logging.debug('Parsing VERSION')
             logging.debug(info)
+            self.version = info.strip()
         elif state == self.STATE_DBLINK:
             logging.debug('Parsing DBLINK')
             logging.debug(info)
+            self.dblink = info.strip()
         elif state == self.STATE_KEYWORDS:
             logging.debug('Parsing KEYWORDS')
             logging.debug(info)
+            self.keywords = info.strip()
         elif state == self.STATE_COMMENT:
             logging.debug('Parsing COMMENT')
             logging.debug(info)
+            self.comment = info.strip()
         else:
             logging.error('Unknown state: {}'.format(state))
         logging.debug('\n')
@@ -237,12 +257,15 @@ class Genbank(object):
         return '<Genbank file: {}>'.format(self.filepath)
 
 
-
-
 # temp test, to be removed
 # run `python3 genbankparser/genbank.py` to test
 if __name__ == '__main__':
     import os
-    gb_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'sequence.gb')
+    gb_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'protein_refseq.gb')
     gb = Genbank(gb_path, debug=True)
     gb.print_features_to_json()
+    json_path = '/Users/xiaoyao/Downloads/GenbankParser-main/tests/.json'
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    print(data)
+    print(gb.features)
