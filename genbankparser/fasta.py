@@ -60,7 +60,9 @@ class Fasta:
             search = chromosome_repat.search(second_line)
             if search:
                 chromo = search.group()
-            return chromo
+                return chromo
+            else:
+                return None
     
     def dna_info(self):
         """从`sequence.gb`中找到dna信息，包括序列定位，gene，locus_tag等，删除重复，保存于reduced_gene_info.txt文件中，返回列表中每行信息为一个元素"""

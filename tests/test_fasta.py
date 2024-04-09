@@ -1,7 +1,8 @@
 import pytest
-from fasta import Fasta
+import os
+from genbankparser.fasta import Fasta
 
-my_instance = Fasta('sequence.gb')        # 创建Fasta()实例
+my_instance = Fasta(os.path.join(os.path.dirname(__file__), 'noref.gb'))        # 创建Fasta()实例
 
 def test_organism():
     result = my_instance.find_organism()
@@ -24,14 +25,14 @@ def test_find_seq():
     assert sliced_list == test_list
 
 def test_dna_list():
-    result_list = my_instance.nucleic_acid_list('dna_filter.txt')
+    result_list = my_instance.nucleic_acid_list(os.path.join(os.path.dirname(__file__), 'dna_filter.txt'))
     sliced_list = result_list[:10] + result_list[-10:]
     test_list = ['c', 'c', 'a', 'c', 'a', 'c', 'c', 'a', 'c', 'a', 't', 'g', 't', 'g', 't', 'g', 't', 'g', 'g', 'g']
     assert sliced_list == test_list
 
 def test_fasta_file():
-    nucleic_acid = my_instance.nucleic_acid_list('dna_filter.txt')
-    result_list = my_instance.fasta_file('reduced_gene_info.txt', 'fasta.txt', nucleic_acid)
+    nucleic_acid = my_instance.nucleic_acid_list(os.path.join(os.path.dirname(__file__), 'dna_filter.txt'))
+    result_list = my_instance.fasta_file(os.path.join(os.path.dirname(__file__), 'reduced_gene_info.txt'), os.path.join(os.path.dirname(__file__), 'fasta.txt'), nucleic_acid)
     sliced_list = result_list[-2:]
     test_list = ['atgttgaagtcagccgtttattcaattttagccgcttctttggttaatgcaggtaccatacccctcggaaagttatctgacattgacaaaatcggaactcaaacggaaattttcccatttttgggtggttctgggccatactactctttccctggtgattatggtatttctcgtgatttgccggaaagttgtgaaatgaagcaagtgcaaatggttggtagacacggtgaaagataccccactgtcagcaaagccaaaagtatcatgacaacatggtacaaattgagtaactataccggtcaattcagcggagcattgtctttcttgaacgatgactacgaatttttcattcgtgacaccaaaaacctagaaatggaaaccacacttgccaattcggtcaatgttttgaacccatataccggtgagatgaatgctaagagacacgctcgtgatttcttggcgcaatatggctacatggtcgaaaaccaaaccagttttgccgtttttacgtctaactcgaacagatgtcatgatactgcccagtatttcattgacggtttgggtgataaattcaacatatccttgcaaaccatcagtgaagccgagtctgctggtgccaatactctgagtgcccaccattcgtgtcctgcttgggacgatgatgtcaacgatgacattttgaaaaaatatgataccaaatatttgagtggtattgccaagagattaaacaaggaaaacaagggtttgaatctgacttcaagtgatgcaaacactttttttgcatggtgtgcatatgaaataaacgctagaggttacagtgacatctgtaacatcttcaccaaagatgaattggtccgtttctcctacggccaagacttggaaacttattatcaaacgggaccaggctatgacgtcgtcagatccgtcggtgccaacttgttcaacgcttcagtgaaactactaaaggaaagtgaggtccaggaccaaaaggtttggttgagtttcacccacgataccgatattctgaactatttgaccactatcggcataatcgatgacaaaaataacttgaccgccgaacatgttccattcatggaaaacactttccacagatcctggtacgttccacaaggtgctcgtgtttacactgaaaagttccagtgttccaatgacacctatgttagatacgtcatcaacgatgctgtcgttccaattgaaacctgttctactggtccagggttctcctgtgaaataaatgacttctacgactatgctgaaaagagagtagccggtactgacttcctaaaggtctgtaacgtcagcagcgtcagtaactctactgaattgacctttttctgggactggaataccaagcactacaacgacactttattaaaacagtaa', '>YAR071W:225460-226863	[organism=Saccharomyces cerevisiae S288C]	[chromosome=chromosome I]']
     assert sliced_list == test_list

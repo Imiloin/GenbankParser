@@ -1,7 +1,7 @@
 import re
 import json
 import logging
-from feature import Feature
+from genbankparser.feature import Feature
 import os
 
 
