@@ -255,17 +255,3 @@ class Genbank(object):
 
     def __repr__(self):
         return '<Genbank file: {}>'.format(self.filepath)
-
-
-# temp test, to be removed
-# run `python3 genbankparser/genbank.py` to test
-if __name__ == '__main__':
-    import os
-    gb_path = os.path.join(os.path.dirname(__file__), '..', 'tests', 'protein_refseq.gb')
-    gb = Genbank(gb_path, debug=True)
-    gb.export_features_to_json()
-    json_path = '/Users/xiaoyao/Downloads/GenbankParser-main/tests/.json'
-    with open(json_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    print(data)
-    print(gb.features)
