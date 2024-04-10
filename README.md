@@ -57,6 +57,27 @@ pytest tests/
     
     fasta = Fasta(<path_to_genbank_file>)
     
-    ????
+    # 打印 Genbank 文件中的物种信息
+    print(fasta.find_organism())
     
+    # 打印 Genbank 文件中的染色体序号信息
+    print(fasta.find_chromosome())
+    
+    ''' 
+    打印 Genbank 文件中的dna序列信息，包括核酸序列在全序列上的定位、基因id、基因座id
+    同时将这些信息保存到 `reduced_dna_info.txt` 中
+    '''
+    print(fasta.dna_info())
+    
+    # 打印 Genbank 文件中包含全核酸序列的行,同时将这些行保存到 `dna_filter.txt` 中
+    print(fasta.find_dna_seq())
+    
+    # 提取 Genbank 文件中核酸序列行的碱基信息，打印碱基序列列表（nucleic_acid_list）
+    print(fasta.nucleic_acid_list(<path_to_dna_filter.txt>))
+    
+    # 打印列表格式的 fasta 文件，同时创建 Genbank 文件的 fasta 格式文件
+    print(fasta.fasta_file(<path_to_reduced_dna_info.txt>, <path_to_create_fasta_file>, nucleic_acid_list))
+    
+    # 直接根据 Genbank 文件创建 fasta 格式文件 `fasta_rev.txt`
+    fasta = Fasta(<path_to_genbank_file>)
     ```
