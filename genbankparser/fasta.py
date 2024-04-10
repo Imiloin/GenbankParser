@@ -46,7 +46,7 @@ class Fasta:
     def find_organism(self):
         """从`sequence.gb`中找到匹配的物种名称，显示于fasta格式文件中信息行"""
         file_path = self.file_path
-        organism_pat = "(?<=ORGANISM\s{2}).+$"
+        organism_pat = r"(?<=ORGANISM\s{2}).+$"
         organism_repat = re.compile(organism_pat)
         with open(file_path, "r") as f:
             org = ""
@@ -59,7 +59,7 @@ class Fasta:
     def find_chromosome(self):
         """从`sequence.gb`中找到匹配的染色体序号，显示于fasta格式文件中信息行"""
         file_path = self.file_path
-        chromosome_pat = "chromosome\s\w"
+        chromosome_pat = r"chromosome\s\w"
         chromosome_repat = re.compile(chromosome_pat)
         with open(file_path, "r") as f:
             first_line = f.readline()
@@ -77,12 +77,12 @@ class Fasta:
         gene_info_path = f"{self.dir_path}/gene_info.txt"
         with open(file_path, "r") as f:
             with open(gene_info_path, "w") as dna_info:
-                info_position_pat = "(?<=gene\s{12})(complement\()?\d+\.{2}\d+(\))?"  # 匹配gene的位置信息
+                info_position_pat = r"(?<=gene\s{12})(complement\()?\d+\.{2}\d+(\))?"  # 匹配gene的位置信息
                 info_position_repat = re.compile(info_position_pat)
-                info_name_pat = '(?<=\/gene=")\w+(?=")'  # 匹配gene的gene_name信息
+                info_name_pat = r'(?<=\/gene=")\w+(?=")'  # 匹配gene的gene_name信息
                 info_name_repat = re.compile(info_name_pat)
                 info_locus_pat = (
-                    '(?<=\/locus_tag=")\w+-?\w+(?=")'  # 匹配gene的locus_tag信息
+                    r'(?<=\/locus_tag=")\w+-?\w+(?=")'  # 匹配gene的locus_tag信息
                 )
                 info_locus_repat = re.compile(info_locus_pat)
                 for line in f:
@@ -127,7 +127,7 @@ class Fasta:
         result = []
         with open(file_path, "r") as f:
             with open(filter_path, "w") as dna_filter:
-                dna_seq_pat = "\d+(\s[atcg]{10})+"
+                dna_seq_pat = r"\d+(\s[atcg]{10})+"
                 repat_dna_seq = re.compile(dna_seq_pat)
                 for line in f:
                     line = line.rstrip()
@@ -142,7 +142,7 @@ class Fasta:
         nucleic_acid = []  # 用于按顺序保存所有核酸信息，一个base作为一个元素
         filter_path = path
         with open(filter_path, "r") as f:
-            nucleic_pat = "([actg]+\s)+[atcg]*$"
+            nucleic_pat = r"([actg]+\s)+[atcg]*$"
             nucleic_repat = re.compile(nucleic_pat)
             for line in f:
                 line = line.rstrip()
@@ -158,10 +158,10 @@ class Fasta:
         """将已有信息写为fasta格式，写入fasta.txt文件中，:param:path1为核酸序列信息文件，:param:path2为所要书写的fasta文件地址，返回列表中fasta.txt的每一行作为一个元素，此函数输出次序中核酸序列行和信息行将互换，需后续操作"""
         with open(path1, "r") as f:
             with open(path2, "w") as fas:
-                locus_pat = "(?<=locus\s)\w+"  # 匹配locus_tag
+                locus_pat = r"(?<=locus\s)\w+"  # 匹配locus_tag
                 locus_repat = re.compile(locus_pat)
-                position_pat1 = "(?<=complement\()\d+\.{2}\d+"  # 匹配互补链（complement）的核酸定位信息
-                position_pat2 = "\d+\.\.\d+"  # 匹配非互补链的核酸定位信息
+                position_pat1 = r"(?<=complement\()\d+\.{2}\d+"  # 匹配互补链（complement）的核酸定位信息
+                position_pat2 = r"\d+\.\.\d+"  # 匹配非互补链的核酸定位信息
                 position_repat1 = re.compile(position_pat1)
                 position_repat2 = re.compile(position_pat2)
                 info = []
@@ -172,8 +172,8 @@ class Fasta:
                     search_locus = locus_repat.search(line)
                     if search_pat1:
                         matched_content = search_pat1.group()
-                        num1_pat = "\d+(?=\.\.)"  # 匹配核酸定位信息中的第一个数字
-                        num2_pat = "(?<=\.\.)\d+"  # 匹配核酸定位信息中的第二个数字
+                        num1_pat = r"\d+(?=\.\.)"  # 匹配核酸定位信息中的第一个数字
+                        num2_pat = r"(?<=\.\.)\d+"  # 匹配核酸定位信息中的第二个数字
                         num1_repat = re.compile(num1_pat)
                         num2_repat = re.compile(num2_pat)
                         search1 = num1_repat.search(line)
@@ -192,8 +192,8 @@ class Fasta:
                         result.append(sequence)
                     elif search_pat2:
                         matched_content = search_pat2.group()
-                        num1_pat = "\d+(?=\.\.)"  # 匹配核酸定位信息中的第一个数字
-                        num2_pat = "(?<=\.\.)\d+"  # 匹配核酸定位信息中的第二个数字
+                        num1_pat = r"\d+(?=\.\.)"  # 匹配核酸定位信息中的第一个数字
+                        num2_pat = r"(?<=\.\.)\d+"  # 匹配核酸定位信息中的第二个数字
                         num1_repat = re.compile(num1_pat)
                         num2_repat = re.compile(num2_pat)
                         search1 = num1_repat.search(line)
