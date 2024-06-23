@@ -4,11 +4,12 @@ GenBank 是一个综合性的公共序列数据库，由美国国立生物技术
 
 本项目构建了 `genbankparser` python package，可以解析 `.gb` 格式的 Genbank 文件，提取其中的特征，并输出相应的 FASTA 文件。
 
-
+> [!IMPORTANT]  
+> 本项目仅为课程小组作业，目前仍存在较多 bug。如果需要更加稳定的 Genbank 文件解析工具，建议使用 [Biopython](https://biopython.org/)。
 
 ## Installation From Source Code
 
-建议使用 python 3.8+ 版本。
+要求使用 python 3.8+ 版本。
 
 #### Clone this repo
 
@@ -29,11 +30,10 @@ pip install -e .
 pytest tests/
 ```
 
-
-
 ## Usage
 
 + 读取一个 Genbank 文件，并导出其中的特征
+
     ```python
     from genbankparser.genbank import Genbank
 
@@ -51,6 +51,7 @@ pytest tests/
     ```
 
 + 根据 Genbank 文件的内容，导出相应的 FASTA 文件
+
     ```python
     from genbankparser.fasta import Fasta
 

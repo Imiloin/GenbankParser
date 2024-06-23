@@ -11,7 +11,7 @@ setup(
     description="A parser for Genbank files.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests*"]),
     test_suite="tests",
     python_requires='>=3.8',
     install_requires=[
